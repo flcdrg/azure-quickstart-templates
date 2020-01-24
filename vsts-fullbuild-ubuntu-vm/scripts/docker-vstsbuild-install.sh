@@ -11,8 +11,8 @@ sudo /bin/date +%H:%M:%S > /home/$5/install.progress.txt
 
 echo "ooooo      FULL INSTALL      ooooo" >> /home/$5/install.progress.txt
 
-# Install Docker Engine and Compose
-echo "Installing Docker Engine and Compose" >> /home/$5/install.progress.txt
+echo "Installing prerequisites" >> /home/$5/install.progress.txt
+
 sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates gnupg-agent
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -20,7 +20,22 @@ sudo add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
    stable"
+
+sudo add-apt-repository ppa:git-core/ppa -y
+
+# Download the Microsoft repository GPG keys
+wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
+
+# Register the Microsoft repository GPG keys
+sudo dpkg -i packages-microsoft-prod.deb
+
+# Enable the "universe" repositories
+sudo add-apt-repository universe
+
 sudo apt-get update
+
+# Install Docker Engine and Compose
+echo "Installing Docker Engine and Compose" >> /home/$5/install.progress.txt
 
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 
@@ -36,46 +51,25 @@ sudo /bin/date +%H:%M:%S >> /home/$5/install.progress.txt
 
 # Git
 echo "Installing Git" >> /home/$5/install.progress.txt
+
 sudo apt-get install -y git
 
 # PowerShell
 echo "Installing PowerShell Core" >> /home/$5/install.progress.txt
 
-# Download the Microsoft repository GPG keys
-wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
-
-# Register the Microsoft repository GPG keys
-sudo dpkg -i packages-microsoft-prod.deb
-
-# Update the list of products
-sudo apt-get update
-
-# Enable the "universe" repositories
-sudo add-apt-repository universe
-
 # Install PowerShell
 sudo apt-get install -y powershell
 
-
-# Install VSTS build agent dependencies
-
-echo "Installing libunwind8 and libcurl3 package" >> /home/$5/install.progress.txt
-sudo apt-get -y install libunwind8 libcurl3
-sudo /bin/date +%H:%M:%S >> /home/$5/install.progress.txt
-
-
-# Download VSTS build agent and required security patch
-
+# Download VSTS build agent
 echo "Downloading VSTS Build agent package" >> /home/$5/install.progress.txt
+
+sudo -u $5 mkdir /home/$5/downloads
 
 cd /home/$5/downloads
 
-sudo -u $5 wget https://vstsagentpackage.azureedge.net/agent/2.144.1/vsts-agent-linux-x64-2.144.1.tar.gz
-sudo -u $5 wget http://security.ubuntu.com/ubuntu/pool/main/i/icu/libicu52_52.1-8ubuntu0.2_amd64.deb
-sudo dpkg -i libicu52_52.1-8ubuntu0.2_amd64.deb
+sudo -u $5 wget https://vstsagentpackage.azureedge.net/agent/2.163.1/vsts-agent-linux-x64-2.163.1.tar.gz
 
 sudo /bin/date +%H:%M:%S >> /home/$5/install.progress.txt
-
 
 echo "Installing VSTS Build agent package" >> /home/$5/install.progress.txt
 
@@ -83,6 +77,8 @@ echo "Installing VSTS Build agent package" >> /home/$5/install.progress.txt
 sudo -u $5 mkdir /home/$5/vsts-agent
 cd /home/$5/vsts-agent
 sudo -u $5 tar xzf /home/$5/downloads/vsts-agent-linux*
+
+sudo ./bin/installdependencies.sh
 
 echo "LANG=en_US.UTF-8" > .env
 echo "export LANG=en_US.UTF-8" >> /home/$5/.bashrc
