@@ -60,6 +60,9 @@ echo "PowerShell"
 # Install PowerShell
 sudo apt-get install -y powershell
 
+# Install 7z
+sudo apt-get install -y p7zip-full
+
 # Download VSTS build agent
 echo "Downloading VSTS Build agent package" >> /home/$5/install.progress.txt
 echo "Azure Pipelines"
