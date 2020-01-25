@@ -1,11 +1,5 @@
 #!/bin/sh
 
-echo "1 $1"
-echo "2 $2"
-echo "3 $3"
-echo "4 $4"
-echo "5 $5"
-
 # Install Build Tools
 sudo /bin/date +%H:%M:%S > /home/$5/install.progress.txt
 
@@ -16,7 +10,7 @@ echo "Installing prerequisites" >> /home/$5/install.progress.txt
 sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates gnupg-agent
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository \
+sudo add-apt-repository -y \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
    stable"
@@ -30,14 +24,14 @@ wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-pr
 sudo dpkg -i packages-microsoft-prod.deb
 
 # Enable the "universe" repositories
-sudo add-apt-repository universe
+sudo add-apt-repository universe -y
 
 sudo apt-get update
 
 # Install Docker Engine and Compose
 echo "Installing Docker Engine and Compose" >> /home/$5/install.progress.txt
 
-sudo apt-get install docker-ce docker-ce-cli containerd.io
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
 sudo service docker start
 sudo systemctl enable docker
@@ -67,7 +61,7 @@ sudo -u $5 mkdir /home/$5/downloads
 
 cd /home/$5/downloads
 
-sudo -u $5 wget https://vstsagentpackage.azureedge.net/agent/2.163.1/vsts-agent-linux-x64-2.163.1.tar.gz
+sudo -u $5 wget -nv https://vstsagentpackage.azureedge.net/agent/2.163.1/vsts-agent-linux-x64-2.163.1.tar.gz
 
 sudo /bin/date +%H:%M:%S >> /home/$5/install.progress.txt
 
