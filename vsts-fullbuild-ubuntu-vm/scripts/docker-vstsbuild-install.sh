@@ -100,7 +100,7 @@ echo =============================== >> /home/$5/vsts.install.log.txt 2>&1
 echo Running Agent.Listener >> /home/$5/vsts.install.log.txt 2>&1
 
 # Create work directory on second disk
-sudo -mkdir /mnt/agent_work
+sudo mkdir /mnt/agent_work
 sudo setfacl -m user:vstsBuild:rwx /mnt/agent_work
 
 sudo -u $5 -E bin/Agent.Listener configure --unattended --replace --acceptteeeula --url $1 --auth PAT --token $2 --pool "$3" --work "/mnt/agent_work"  >> /home/$5/vsts.install.log.txt 2>&1
