@@ -106,7 +106,12 @@ echo Running Agent.Listener >> /home/$5/vsts.install.log.txt 2>&1
 sudo mkdir /mnt/agent_work
 sudo setfacl -m user:vstsBuild:rwx /mnt/agent_work
 
-sudo -u $5 -E bin/Agent.Listener configure --unattended --replace --acceptteeeula --url $1 --auth PAT --token $2 --pool "$3" --work "/mnt/agent_work"  >> /home/$5/vsts.install.log.txt 2>&1
+# work directory on second drive
+#sudo -u $5 -E bin/Agent.Listener configure --unattended --replace --acceptteeeula --url $1 --auth PAT --token $2 --pool "$3" --work "/mnt/agent_work"  >> /home/$5/vsts.install.log.txt 2>&1
+
+
+sudo -u $5 -E bin/Agent.Listener configure --unattended --replace --acceptteeeula --url $1 --auth PAT --token $2 --pool "$3"  >> /home/$5/vsts.install.log.txt 2>&1
+
 echo =============================== >> /home/$5/vsts.install.log.txt 2>&1
 echo Running ./svc.sh install >> /home/$5/vsts.install.log.txt 2>&1
 sudo -E ./svc.sh install $5 >> /home/$5/vsts.install.log.txt 2>&1
