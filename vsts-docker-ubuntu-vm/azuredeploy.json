@@ -61,7 +61,7 @@
     "publicIPAddressName": "[concat('VNet-',parameters('vstsAgentName'), '-IP')]",
     "publicIPAddressType": "Dynamic",
     "vmName": "[variables('dnsLabelPrefix')]",
-    "vmSize": "Standard_DS2_v2",
+    "vmSize": "Standard_L8s_v2", //"Standard_B4ms", //"Standard_DS12_v2", //"Standard_E8-4s_v3", //"Standard_DS3_v2", //"Standard_DS2_v2", // 
     "virtualNetworkName": "[concat('VNet-', resourceGroup().name)]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
     "storageAccountType": "Premium_LRS",
